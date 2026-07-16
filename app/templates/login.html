@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anmelden – YT MP3 Converter</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+        <circle cx="24" cy="24" r="24" fill="#ff3c3c"/>
+        <polygon points="19,15 37,24 19,33" fill="#fff"/>
+      </svg>
+      <h1>YT MP3 Converter</h1>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="/login" autocomplete="off">
+      <div class="form-group">
+        <label for="username">Benutzername</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          required
+          autocomplete="username"
+          placeholder="Benutzername"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Passwort</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          autocomplete="current-password"
+          placeholder="Passwort"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Anmelden</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YT MP3 Converter</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <header class="app-header">
+    <div class="header-brand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32">
+        <circle cx="24" cy="24" r="24" fill="#ff3c3c"/>
+        <polygon points="19,15 37,24 19,33" fill="#fff"/>
+      </svg>
+      <span>YT MP3 Converter</span>
+    </div>
+    <a href="/logout" class="btn btn-ghost btn-sm">Abmelden</a>
+  </header>
+
+  <!-- ── Main ───────────────────────────────────────────────────────────── -->
+  <main class="app-main">
+
+    <!-- Step 1: URL -->
+    <section class="card" id="card-url">
+      <h2 class="card-title">
+        <span class="step-badge">1</span>
+        YouTube-URL eingeben
+      </h2>
+      <div class="input-row">
+        <input
+          type="url"
+          id="yt-url"
+          placeholder="https://www.youtube.com/watch?v=..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="btn btn-primary" id="btn-load">
+          <span class="btn-text">Video laden</span>
+          <span class="spinner hidden"></span>
+        </button>
+      </div>
+      <div id="url-error" class="alert alert-error hidden"></div>
+    </section>
+
+    <!-- Step 2: Info + Settings (hidden until loaded) -->
+    <section class="card hidden" id="card-settings">
+      <h2 class="card-title">
+        <span class="step-badge">2</span>
+        Einstellungen
+      </h2>
+
+      <!-- Video preview -->
+      <div class="video-info" id="video-info">
+        <img id="vi-thumb" src="" alt="Thumbnail" class="vi-thumb" />
+        <div class="vi-meta">
+          <div class="vi-title" id="vi-title"></div>
+          <div class="vi-duration" id="vi-duration"></div>
+        </div>
+      </div>
+
+      <!-- Time range -->
+      <div class="time-grid">
+        <div class="form-group">
+          <label for="start-time">Startzeit <span class="label-hint">(hh:mm:ss.mmm)</span></label>
+          <input type="text" id="start-time" class="time-input" placeholder="00:00:00.000" />
+        </div>
+        <div class="form-group">
+          <label for="end-time">Endzeit <span class="label-hint">(hh:mm:ss.mmm)</span></label>
+          <input type="text" id="end-time" class="time-input" placeholder="00:00:10.000" />
+        </div>
+      </div>
+
+      <!-- Duration preview -->
+      <div class="duration-preview" id="duration-preview">
+        Ausschnittlänge: <strong id="cut-length">–</strong>
+      </div>
+
+      <!-- Filename -->
+      <div class="form-group">
+        <label for="filename">Dateiname <span class="label-hint">(.mp3 wird automatisch ergänzt)</span></label>
+        <input type="text" id="filename" placeholder="mein-audio" maxlength="120" />
+      </div>
+
+      <div id="settings-error" class="alert alert-error hidden"></div>
+
+      <!-- Download -->
+      <button class="btn btn-accent btn-full" id="btn-download">
+        <span class="btn-text">MP3 herunterladen</span>
+        <span class="spinner hidden"></span>
+      </button>
+    </section>
+
+    <!-- Progress / status -->
+    <div class="status-bar hidden" id="status-bar">
+      <div class="status-icon">
+        <span class="spinner"></span>
+      </div>
+      <div class="status-msg" id="status-msg">Konvertiere…</div>
+    </div>
+
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

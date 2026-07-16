@@ -3,6 +3,27 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Environment
+.env
+
+# Temp download directories
+tmp/
+ytmp3_*/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
 # C extensions
 *.so
 
