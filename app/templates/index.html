@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
@@ -44,11 +44,11 @@
       <div id="url-error" class="alert alert-error hidden"></div>
     </section>
 
-    <!-- Step 2: Info + Settings (hidden until loaded) -->
+    <!-- Step 2: Audio Editor (hidden until loaded) -->
     <section class="card hidden" id="card-settings">
       <h2 class="card-title">
         <span class="step-badge">2</span>
-        Einstellungen
+        Audio bearbeiten
       </h2>
 
       <!-- Video preview -->
@@ -60,33 +60,67 @@
         </div>
       </div>
 
-      <!-- Time range -->
-      <div class="time-grid">
-        <div class="form-group">
-          <label for="start-time">Startzeit <span class="label-hint">(hh:mm:ss.mmm)</span></label>
-          <input type="text" id="start-time" class="time-input" placeholder="00:00:00.000" />
+      <!-- Hidden audio element -->
+      <audio id="audio-el" preload="auto"></audio>
+
+      <!-- Loading state -->
+      <div class="player-loading" id="player-loading">
+        <span class="spinner"></span>
+        <span>Audio wird heruntergeladen&#8230;</span>
+      </div>
+
+      <!-- Player (hidden until ready) -->
+      <div class="player-card hidden" id="player-card">
+        <div class="progress-row">
+          <span class="time-display" id="time-current">00:00.000</span>
+          <input type="range" class="progress-slider" id="progress-slider"
+                 min="0" max="1000000" value="0" step="1" />
+          <span class="time-display" id="time-total">00:00.000</span>
         </div>
-        <div class="form-group">
-          <label for="end-time">Endzeit <span class="label-hint">(hh:mm:ss.mmm)</span></label>
-          <input type="text" id="end-time" class="time-input" placeholder="00:00:10.000" />
+        <div class="player-controls">
+          <button class="btn btn-ghost btn-sm" id="btn-seek-back10" title="10 Sekunden zurueck">&laquo; 10s</button>
+          <button class="btn btn-ghost btn-sm" id="btn-seek-back1"  title="1 Sekunde zurueck">&laquo; 1s</button>
+          <button class="btn btn-primary btn-play-lg" id="btn-play"><span id="play-icon">&#9654;</span></button>
+          <button class="btn btn-ghost btn-sm" id="btn-seek-fwd1"   title="1 Sekunde vor">1s &raquo;</button>
+          <button class="btn btn-ghost btn-sm" id="btn-seek-fwd10"  title="10 Sekunden vor">10s &raquo;</button>
+          <div class="volume-row">
+            <span class="volume-icon">&#128266;</span>
+            <input type="range" class="volume-slider" id="volume-slider"
+                   min="0" max="1" step="0.01" value="1" />
+          </div>
         </div>
       </div>
 
-      <!-- Duration preview -->
-      <div class="duration-preview" id="duration-preview">
-        Ausschnittlänge: <strong id="cut-length">–</strong>
+      <!-- Cut editor (hidden until ready) -->
+      <div class="cut-editor hidden" id="cut-editor">
+        <div class="cut-section-title">Gesamt-Bereich</div>
+        <div class="time-row">
+          <div class="form-group">
+            <label>Start <span class="label-hint">(mm:ss.mmm)</span></label>
+            <input type="text" class="time-input" id="overall-start" placeholder="00:00.000" />
+          </div>
+          <div class="form-group">
+            <label>Ende <span class="label-hint">(mm:ss.mmm)</span></label>
+            <input type="text" class="time-input" id="overall-end" placeholder="00:00.000" />
+          </div>
+        </div>
+        <div class="cut-section-title cut-section-title--secondary">
+          Ausschnitte rausschneiden
+          <span class="label-hint">(optional &ndash; werden entfernt)</span>
+        </div>
+        <div id="cut-list"></div>
+        <button class="btn btn-ghost btn-sm" id="btn-add-cut">+ Ausschnitt</button>
       </div>
 
       <!-- Filename -->
-      <div class="form-group">
-        <label for="filename">Dateiname <span class="label-hint">(.mp3 wird automatisch ergänzt)</span></label>
+      <div class="form-group filename-group">
+        <label for="filename">Dateiname <span class="label-hint">(.mp3 wird automatisch erg&#228;nzt)</span></label>
         <input type="text" id="filename" placeholder="mein-audio" maxlength="120" />
       </div>
 
       <div id="settings-error" class="alert alert-error hidden"></div>
 
-      <!-- Download -->
-      <button class="btn btn-accent btn-full" id="btn-download">
+      <button class="btn btn-accent btn-full" id="btn-download" disabled>
         <span class="btn-text">MP3 herunterladen</span>
         <span class="spinner hidden"></span>
       </button>
@@ -102,6 +136,6 @@
 
   </main>
 
-  <script src="/static/app.js"></script>
+  <script type="module" src="/static/app.js?v=5"></script>
 </body>
 </html>

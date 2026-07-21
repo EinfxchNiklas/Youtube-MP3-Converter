@@ -3,9 +3,6 @@
 
 $ErrorActionPreference = "Stop"
 
-# ffmpeg in PATH aufnehmen (nach winget-Installation nötig bis Shell neu gestartet)
-$env:PATH = [System.Environment]::GetEnvironmentVariable('PATH','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('PATH','User')
-
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $root
 

@@ -2,7 +2,7 @@
 
 Passwortgeschützte Web-App: YouTube-URL eingeben → Ausschnitt per Millisekunde wählen → MP3 (320 kbps) herunterladen.
 
-**Stack:** FastAPI · yt-dlp · ffmpeg · Docker · Render
+**Stack:** FastAPI · yt-dlp · ffmpeg · Render
 
 ---
 
@@ -10,7 +10,9 @@ Passwortgeschützte Web-App: YouTube-URL eingeben → Ausschnitt per Millisekund
 
 ### Voraussetzungen
 - Python 3.11+
-- [ffmpeg](https://ffmpeg.org/download.html) im PATH installiert
+
+> ffmpeg wird automatisch über das Paket `imageio-ffmpeg` mitgeliefert –
+> keine separate Installation nötig.
 
 ### Setup
 
@@ -65,7 +67,6 @@ app/
   templates/       # Jinja2-HTML (login.html, index.html)
   static/          # style.css (Dark Theme), app.js
 requirements.txt
-Dockerfile
 render.yaml
 .env.example
 ```
