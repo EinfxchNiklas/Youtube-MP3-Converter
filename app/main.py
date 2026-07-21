@@ -105,7 +105,7 @@ async def logout(request: Request):
 
 # ── Health check (UptimeRobot) ───────────────────────────────────────────────
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 async def health():
     return JSONResponse({"status": "ok"})
 
