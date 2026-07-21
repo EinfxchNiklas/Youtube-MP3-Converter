@@ -51,10 +51,10 @@ uvicorn app.main:app --reload
    - `APP_USERNAME` – gewünschter Benutzername
    - `APP_PASSWORD` – sicheres Passwort
    - `SECRET_KEY` wird von Render automatisch generiert
-   - `YOUTUBE_COOKIES` – Inhalt einer `cookies.txt` (Netscape-Format) eines eingeloggten YouTube-Accounts.  
-     Export z.B. mit der Browser-Extension **"Get cookies.txt LOCALLY"** auf youtube.com.  
-     Ohne diese Variable schlägt der Download auf Cloud-IPs wegen Bot-Erkennung fehl.
 4. Deploy starten → fertig
+
+> **Hinweis:** YouTube blockiert Downloads von Cloud-Datacenter-IPs (AWS/GCP) zuverlässig.
+> Das Projekt ist daher für den lokalen Betrieb optimiert.
 
 > **Hinweis:** Auf dem kostenlosen Render-Tier können lange Videos (>5 min)  
 > durch den Request-Timeout abbrechen. Kürzere Ausschnitte funktionieren zuverlässig.
