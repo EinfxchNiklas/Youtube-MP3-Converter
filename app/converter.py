@@ -67,7 +67,7 @@ def get_video_info(url: str) -> VideoInfo:
         "skip_download": True,
         "format": "bestaudio/best",
         "extract_flat": False,
-        "extractor_args": {"youtube": {"player_client": ["ios", "android"]}},
+        "extractor_args": {"youtube": {"player_client": ["web", "ios", "android"]}},
         **({"cookiefile": _cookie_file()} if _cookie_file() else {}),
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -104,7 +104,7 @@ def convert_to_mp3(url: str, start_ms: int, end_ms: int, filename: str) -> str:
         "quiet": True,
         "no_warnings": True,
         "postprocessors": [],  # no post-processing; ffmpeg handles everything
-        "extractor_args": {"youtube": {"player_client": ["ios", "android"]}},
+        "extractor_args": {"youtube": {"player_client": ["web", "ios", "android"]}},
         **({"cookiefile": _cookie_file()} if _cookie_file() else {}),
     }
 
@@ -168,7 +168,7 @@ def download_audio(url: str) -> tuple[str, str]:
         "quiet": True,
         "no_warnings": True,
         "ffmpeg_location": ffmpeg_bin,
-        "extractor_args": {"youtube": {"player_client": ["ios", "android"]}},
+        "extractor_args": {"youtube": {"player_client": ["web", "ios", "android"]}},
         **({"cookiefile": _cookie_file()} if _cookie_file() else {}),
         "postprocessors": [
             {
