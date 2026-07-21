@@ -1,6 +1,7 @@
 """
 converter.py — yt-dlp + ffmpeg helpers
 """
+import functools
 import os
 import re
 import subprocess
@@ -30,6 +31,24 @@ def _ffmpeg_bin() -> str:
 _MAX_DURATION_S: int = 45 * 60  # Videos länger als 45 Minuten werden abgelehnt
 
 
+@functools.lru_cache(maxsize=1)
+def _cookie_file() -> str | None:
+    """Schreibt den Inhalt der Env-Var YOUTUBE_COOKIES einmalig in eine Temp-Datei.
+
+    Lokal nicht gesetzt -> gibt None zurück (keine Cookies).
+    Auf Render: YOUTUBE_COOKIES = Inhalt einer cookies.txt (Netscape-Format).
+    """
+    content = os.environ.get("YOUTUBE_COOKIES", "").strip()
+    if not content:
+        return None
+    f = tempfile.NamedTemporaryFile(
+        mode="w", suffix=".txt", delete=False, prefix="yt_cookies_"
+    )
+    f.write(content)
+    f.close()
+    return f.name
+
+
 def _sanitize_url(url: str) -> str:
     """Basic whitelist check: only allow youtube.com and youtu.be URLs."""
     pattern = re.compile(
@@ -49,6 +68,7 @@ def get_video_info(url: str) -> VideoInfo:
         "format": "bestaudio/best",
         "extract_flat": False,
         "extractor_args": {"youtube": {"player_client": ["ios", "android"]}},
+        **({"cookiefile": _cookie_file()} if _cookie_file() else {}),
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
@@ -85,6 +105,7 @@ def convert_to_mp3(url: str, start_ms: int, end_ms: int, filename: str) -> str:
         "no_warnings": True,
         "postprocessors": [],  # no post-processing; ffmpeg handles everything
         "extractor_args": {"youtube": {"player_client": ["ios", "android"]}},
+        **({"cookiefile": _cookie_file()} if _cookie_file() else {}),
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -148,6 +169,7 @@ def download_audio(url: str) -> tuple[str, str]:
         "no_warnings": True,
         "ffmpeg_location": ffmpeg_bin,
         "extractor_args": {"youtube": {"player_client": ["ios", "android"]}},
+        **({"cookiefile": _cookie_file()} if _cookie_file() else {}),
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",

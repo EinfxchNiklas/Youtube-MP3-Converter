@@ -9,6 +9,7 @@ Passwortgeschützte Web-App: YouTube-URL eingeben → Ausschnitt per Millisekund
 ## Lokale Entwicklung
 
 ### Voraussetzungen
+
 - Python 3.11+
 
 > ffmpeg wird automatisch über das Paket `imageio-ffmpeg` mitgeliefert –
@@ -50,6 +51,9 @@ uvicorn app.main:app --reload
    - `APP_USERNAME` – gewünschter Benutzername
    - `APP_PASSWORD` – sicheres Passwort
    - `SECRET_KEY` wird von Render automatisch generiert
+   - `YOUTUBE_COOKIES` – Inhalt einer `cookies.txt` (Netscape-Format) eines eingeloggten YouTube-Accounts.  
+     Export z.B. mit der Browser-Extension **"Get cookies.txt LOCALLY"** auf youtube.com.  
+     Ohne diese Variable schlägt der Download auf Cloud-IPs wegen Bot-Erkennung fehl.
 4. Deploy starten → fertig
 
 > **Hinweis:** Auf dem kostenlosen Render-Tier können lange Videos (>5 min)  
