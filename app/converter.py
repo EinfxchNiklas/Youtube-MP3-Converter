@@ -41,6 +41,8 @@ def _cookie_file() -> str | None:
     content = os.environ.get("YOUTUBE_COOKIES", "").strip()
     if not content:
         return None
+    # Render kann Zeilenumbrüche als literales \n speichern – normalisieren
+    content = content.replace("\\n", "\n").replace("\r\n", "\n")
     f = tempfile.NamedTemporaryFile(
         mode="w", suffix=".txt", delete=False, prefix="yt_cookies_"
     )
