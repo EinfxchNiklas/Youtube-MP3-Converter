@@ -407,3 +407,6 @@ function showStatusBar(msg, done = false) {
   if (done) hideEl(sp); else showEl(sp);
   showEl(statusBar);
 }
+
+/* ── Heartbeat: hält Server am Leben solange Tab offen ist ──────────────── */
+setInterval(() => fetch('/api/ping', { method: 'POST' }).catch(() => {}), 15000);

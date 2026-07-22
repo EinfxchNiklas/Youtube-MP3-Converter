@@ -26,6 +26,10 @@ from app.converter import get_video_info, convert_to_mp3, download_audio, conver
 _preview_cache: dict[str, tuple[str, float]] = {}
 _CACHE_TTL_SECONDS = 60 * 60  # 1 Stunde
 
+# Watchdog: Server beendet sich wenn kein Browser-Tab mehr offen ist
+_last_ping: float = 0.0
+_WATCHDOG_TIMEOUT_S: int = 60  # Sekunden ohne Ping → Shutdown
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).parent
@@ -48,11 +52,24 @@ async def _cleanup_loop() -> None:
         _cleanup_cache()
 
 
+async def _watchdog_loop() -> None:
+    """Beendet den Server wenn kein Browser-Tab mehr aktiv ist."""
+    while True:
+        await asyncio.sleep(20)
+        if time.time() - _last_ping > _WATCHDOG_TIMEOUT_S:
+            asyncio.get_running_loop().stop()
+            return
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    task = asyncio.create_task(_cleanup_loop())
+    global _last_ping
+    _last_ping = time.time()  # Startgnade: 60s für Browser-Öffnung und Login
+    cleanup_task  = asyncio.create_task(_cleanup_loop())
+    watchdog_task = asyncio.create_task(_watchdog_loop())
     yield
-    task.cancel()
+    cleanup_task.cancel()
+    watchdog_task.cancel()
 
 
 app = FastAPI(title="YouTube MP3 Converter", lifespan=lifespan)
@@ -108,6 +125,16 @@ async def logout(request: Request):
 @app.api_route("/health", methods=["GET", "HEAD"])
 async def health():
     return JSONResponse({"status": "ok"})
+
+
+# ── Watchdog-Ping (Browser → Server) ────────────────────────────────────────
+
+@app.post("/api/ping")
+async def api_ping():
+    """Wird vom Browser alle 15s aufgerufen. Kein Ping → Server fährt nach 60s herunter."""
+    global _last_ping
+    _last_ping = time.time()
+    return JSONResponse({"ok": True})
 
 
 # ── Main app route ───────────────────────────────────────────────────────────
